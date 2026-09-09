@@ -1,0 +1,32 @@
+/**
+ * For more details on how to configure Wrangler, refer to:
+ * https://developers.cloudflare.com/workers/wrangler/configuration/
+ */
+{
+    "$schema": "node_modules/wrangler/config-schema.json",
+    "name": "pinstack",
+    "main": "src/index.ts",
+    "compatibility_date": "2026-09-07",
+    "upload_source_maps": true,
+    "observability": {
+        "logs": {
+            "enabled": true,
+            "head_sampling_rate": 1,
+            "invocation_logs": true,
+            "persist": true
+        },
+        "traces": {
+            "enabled": true,
+            "head_sampling_rate": 1,
+            "persist": true
+        }
+    },
+    "kv_namespaces": [
+        {
+            "binding": "KV",
+            "id": "6f5556945f6b4677ac5d6f7250c0b3c2",
+            // Optional: preview_id used when running `wrangler dev` for local dev
+            "preview_id": "e8cb11289980438ca0dd680b9f8186df"
+        }
+    ]
+}
