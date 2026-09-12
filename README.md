@@ -7,7 +7,7 @@ This is a API to generate a svg card for your Github repositories that you can e
 
 Below is a example of this API:
 
-![PinStack Repo](https://pinstack.matheesha.workers.dev/github/repo/m4theesha/jwtkn)
+![PinStack Repo](https://pinstack.matheesha.workers.dev/github/repo/m4theesha/pinstack)
 
 ## Usage
 
