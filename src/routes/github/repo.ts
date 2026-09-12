@@ -28,7 +28,7 @@ repo.get('/:owner/:repo', async (c) => {
         return c.text("Requested repo doesn't exist!")
     }
     //check if repo data isn't modified since last fetch and return cached data
-    if (fetchedRepo.notModified && cachedRepo) {
+    if (fetchedRepo.notModified == true && cachedRepo) {
         await setCachedRepo(c.env, cacheKey, cachedRepo?.data, cachedRepo?.etag ?? null)
         const svg = await GenerateGithubRepoSvg(cachedRepo.data)
         return new Response(svg, {
@@ -39,7 +39,7 @@ repo.get('/:owner/:repo', async (c) => {
         });
     }
     //return fetched data if new data was returned from github
-    if (!fetchedRepo.notModified) {
+    if (fetchedRepo.notModified == false) {
         await setCachedRepo(c.env, cacheKey, fetchedRepo.data, fetchedRepo.etag ?? null)
         const svg = await GenerateGithubRepoSvg(fetchedRepo.data)
         return new Response(svg, {
