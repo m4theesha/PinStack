@@ -12,6 +12,8 @@
     "typescript": "^5"
   },
   "dependencies": {
-    "hono": "^4.13.7"
+    "@cf-wasm/satori": "^0.4.0",
+    "hono": "^4.13.7",
+    "react": "^19.3.0"
   }
 }

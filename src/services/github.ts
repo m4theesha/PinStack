@@ -1,10 +1,13 @@
-import type { Env } from "../types";
+import type { Env, LanguageColors } from "../types";
+import colorsData from "../data/githubLanguageColors.json"
 
 interface CacheStructure<T> {
     data: T,
     etag: string | null,
     cachedAt: string
 }
+
+const languageColors = colorsData as LanguageColors;
 
 //function to get cached data from cloudflare KV namespace
 export async function getCachedData(env: Env, key: string) {
@@ -43,6 +46,16 @@ export async function fetchRepoData(owner: string, repo: string, env: Env, etag:
     }
 
     const newEtag = res.headers.get("etag")
-    const data = await res.json()
+    const rawData: any = await res.json()
+    const data = {
+        owner: rawData.owner.login,
+        repoName: rawData.name,
+        avatar: rawData.owner.avatar_url,
+        description: rawData.description ?? '',
+        topics: rawData.topics ?? [],
+        language: rawData.language ?? 'Unknown',
+        languageColor: languageColors[rawData.language]?.color ?? '#8b949e',
+        stargazers: rawData.stargazers_count,
+    }
     return { notModified: false as const, data, etag: newEtag }
 }
