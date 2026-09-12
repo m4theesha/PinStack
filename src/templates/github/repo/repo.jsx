@@ -15,32 +15,37 @@ export function Repo({ repo }) {
             <div style={{
                 display: 'flex',
                 alignItems: 'center',
+                marginBottom: '0px',
                 gap: 10
             }}>
                 <img width={20} height={20} src={repo.avatar} style={{
                     border: '1px solid #31343a',
-                    borderRadius: '4px'
+                    borderRadius: '4px',
+                    marginBottom: '0px'
                 }} />
                 <span style={{
                     color: '#4493f8',
                     fontSize: '16px',
-                    fontWeight: 500
+                    fontWeight: 500,
+                    marginBottom: '0px'
                 }}>
                     {repo.owner}/<span style={{ fontWeight: 'bold' }}>{repo.repoName}</span></span>
             </div>
-            <p style={{
-                display: '-webkit-box',
-                WebkitBoxOrient: 'vertical',
-                WebkitLineClamp: 2,
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                color: 'white',
-                fontSize: '14px',
-                fontWeight: 400,
-                marginTop: '4px',
-                marginBottom: '0px'
-            }}>{repo.description}</p>
-            <div style={{ display: 'flex', marginTop: '8px', gap: '8px' }}>
+            {repo.description && repo.description.trim() !== '' &&
+                <p style={{
+                    display: '-webkit-box',
+                    WebkitBoxOrient: 'vertical',
+                    WebkitLineClamp: 2,
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    color: 'white',
+                    fontSize: '14px',
+                    fontWeight: 400,
+                    marginTop: '4px',
+                    marginBottom: '0px'
+                }}>{repo.description}</p>
+            }
+            <div style={{ display: 'flex', gap: '8px' }}>
                 {repo.topics.slice(0, 4).map((topic) => (
                     <div key={topic} style={{
                         display: 'flex',
@@ -50,6 +55,7 @@ export function Repo({ repo }) {
                         color: 'rgb(68, 147, 248)',
                         paddingLeft: '10px',
                         paddingRight: '10px',
+                        marginTop: '8px',
                         fontSize: '12px',
                         fontWeight: '500',
                         borderRadius: '24px'
