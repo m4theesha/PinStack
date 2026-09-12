@@ -23,6 +23,10 @@ repo.get('/:owner/:repo', async (c) => {
     }
     //fetch repo data from github
     const fetchedRepo = await fetchRepoData(owner, repoName, c.env, cachedRepo?.etag ?? null)
+
+    if(!fetchedRepo.repoExists){
+        return c.text("Requested repo doesn't exist!")
+    }
     //check if repo data isn't modified since last fetch and return cached data
     if (fetchedRepo.notModified && cachedRepo) {
         await setCachedRepo(c.env, cacheKey, cachedRepo?.data, cachedRepo?.etag ?? null)

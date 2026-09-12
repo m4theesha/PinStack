@@ -41,8 +41,12 @@ export async function fetchRepoData(owner: string, repo: string, env: Env, etag:
 
     const res = await fetch(`${api}/repos/${owner}/${repo}`, { headers })
 
+    if (res.status == 404) {
+        return { repoExists: false }
+    }
+
     if (res.status == 304) {
-        return { notModified: true as const}
+        return { notModified: true as const }
     }
 
     const newEtag = res.headers.get("etag")
