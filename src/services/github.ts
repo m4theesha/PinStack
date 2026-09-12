@@ -46,7 +46,7 @@ export async function fetchRepoData(owner: string, repo: string, env: Env, etag:
     }
 
     if (res.status == 304) {
-        return { notModified: true as const }
+        return { repoExists: true, notModified: true as const }
     }
 
     const newEtag = res.headers.get("etag")
@@ -61,5 +61,5 @@ export async function fetchRepoData(owner: string, repo: string, env: Env, etag:
         languageColor: languageColors[rawData.language]?.color ?? '#8b949e',
         stargazers: rawData.stargazers_count,
     }
-    return { notModified: false as const, data, etag: newEtag }
+    return { repoExists: true, notModified: false as const, data, etag: newEtag }
 }
