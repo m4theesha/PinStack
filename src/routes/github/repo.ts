@@ -6,6 +6,15 @@ import GenerateGithubRepoSvg from '../../templates/github/repo/generate';
 
 const repo = new Hono<{ Bindings: Env }>()
 
+function svgResponse(svg: string): Response {
+  return new Response(svg, {
+    headers: {
+      "Content-Type": "image/svg+xml",
+      "Cache-Control": "public, max-age=3600",
+    },
+  });
+}
+
 repo.get('/:owner/:repo', async (c) => {
     const { owner, repo: repoName } = c.req.param()
     const cacheKey = `github:repo:${owner}/${repoName}`
@@ -14,12 +23,7 @@ repo.get('/:owner/:repo', async (c) => {
     //check if cache is expired
     if (cachedRepo && !isCacheExpired(cachedRepo?.cachedAt, 3600)) {
         const svg = await GenerateGithubRepoSvg(cachedRepo.data)
-        return new Response(svg, {
-            headers: {
-                'Content-Type': 'image/svg+xml',
-                'Cache-Control': 'public, max-age=3600',
-            },
-        });
+        return svgResponse(svg)
     }
     //fetch repo data from github
     const fetchedRepo = await fetchRepoData(owner, repoName, c.env, cachedRepo?.etag ?? null)
@@ -29,28 +33,19 @@ repo.get('/:owner/:repo', async (c) => {
     }
     //check if repo data isn't modified since last fetch and return cached data
     if (fetchedRepo.notModified == true && cachedRepo) {
-        await setCachedRepo(c.env, cacheKey, cachedRepo?.data, cachedRepo?.etag ?? null)
+        await setCachedRepo(c.env, cacheKey, cachedRepo.data, cachedRepo.etag ?? null)
         const svg = await GenerateGithubRepoSvg(cachedRepo.data)
-        return new Response(svg, {
-            headers: {
-                'Content-Type': 'image/svg+xml',
-                'Cache-Control': 'public, max-age=3600',
-            },
-        });
+        return svgResponse(svg)
     }
     //return fetched data if new data was returned from github
     if (fetchedRepo.notModified == false) {
         await setCachedRepo(c.env, cacheKey, fetchedRepo.data, fetchedRepo.etag ?? null)
         const svg = await GenerateGithubRepoSvg(fetchedRepo.data)
-        return new Response(svg, {
-            headers: {
-                'Content-Type': 'image/svg+xml',
-                'Cache-Control': 'public, max-age=3600',
-            },
-        });
+        return svgResponse(svg)
     }
 
     return c.text("Unexpected cache state", 500)
 })
 
 export default repo
+

@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@cf-wasm/satori": "^0.4.0",
+    "@hono/zod-openapi": "^1.6.3",
     "hono": "^4.13.7",
     "react": "^19.3.0"
   }
