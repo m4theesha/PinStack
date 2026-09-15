@@ -53,6 +53,7 @@ export async function fetchRepoData(owner: string, repo: string, env: Env, etag:
     const rawData: any = await res.json()
     const data = {
         owner: rawData.owner.login,
+        isOwnedByOrg: rawData.owner.type === 'Organization' ? true : false,
         repoName: rawData.name,
         avatar: rawData.owner.avatar_url,
         description: rawData.description ?? '',

@@ -5,6 +5,7 @@ export interface Env {
 
 export interface RepoData {
     owner: string;
+    isOwnedByOrg: boolean;
     repoName: string;
     avatar: string;       // must be a full URL, e.g. https://avatars.githubusercontent.com/u/...
     description: string;

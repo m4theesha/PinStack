@@ -1,10 +1,10 @@
-import { Hono } from 'hono'
+import { OpenAPIHono, createRoute, z } from "@hono/zod-openapi";
 import type { Env } from "../../types";
 import { fetchRepoData, getCachedData, setCachedRepo } from '../../services/github';
 import { isCacheExpired } from '../../utils';
 import GenerateGithubRepoSvg from '../../templates/github/repo/generate';
 
-const repo = new Hono<{ Bindings: Env }>()
+const repo = new OpenAPIHono<{ Bindings: Env }>()
 
 function svgResponse(svg: string): Response {
   return new Response(svg, {
@@ -15,8 +15,31 @@ function svgResponse(svg: string): Response {
   });
 }
 
-repo.get('/:owner/:repo', async (c) => {
-    const { owner, repo: repoName } = c.req.param()
+const route = createRoute({
+    method: "get",
+    path: "/{owner}/{repo}",
+    operationId: "repository",
+    request: {
+        params: z.object({
+            owner: z.string().openapi({ example: "m4theesha" }),
+            repo: z.string().openapi({ example: "pinstack" })
+        }),
+    },
+    responses: {
+        200: {
+            description: "SVG card for the repository",
+            content: { "image/svg+xml": { schema: z.string() } }
+        },
+        404: {
+            description: "Repository not found",
+            content: { "text/plain": { schema: z.string() } }
+        }
+    },
+    tags: ['Github'],
+    summary: "Get a svg card for a repository"
+})
+repo.openapi(route, async (c) => {
+    const { owner, repo: repoName } = c.req.valid("param")
     const cacheKey = `github:repo:${owner}/${repoName}`
     //get cached github repo data
     const cachedRepo = await getCachedData(c.env, cacheKey)

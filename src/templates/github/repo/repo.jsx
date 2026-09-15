@@ -20,7 +20,7 @@ export function Repo({ repo }) {
             }}>
                 <img width={20} height={20} src={repo.avatar} style={{
                     border: '1px solid #31343a',
-                    borderRadius: '4px',
+                    borderRadius: repo.isOwnedByOrg ? '4px' : '100%',
                     marginBottom: '0px'
                 }} />
                 <span style={{
