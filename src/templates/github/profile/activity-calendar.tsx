@@ -102,7 +102,7 @@ export function ActivityCalendar({
   const step = blockSize + blockMargin;
   const labelHeight = hideMonthLabels ? 0 : fontSize + blockMargin;
   const weekdayLabelWidth = hideWeekdayLabels ? 0 : fontSize * 2.2;
-  const gridWidth = weeks.length * step - blockMargin;
+  const gridWidth = Math.max(0, weeks.length * step - blockMargin);
   const gridHeight = 7 * step - blockMargin;
   const colorFor = (level: number) => colors[Math.min(Math.max(level, 0), maxLevel)] ?? colors[0];
 
