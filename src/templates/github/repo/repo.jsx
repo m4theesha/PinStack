@@ -23,27 +23,27 @@ export function Repo({ repo }) {
                     borderRadius: repo.isOwnedByOrg ? '4px' : '100%',
                     marginBottom: '0px'
                 }} />
-                <span style={{
+                <div style={{
+                    display: 'flex',
                     color: '#4493f8',
                     fontSize: '16px',
                     fontWeight: 500,
                     marginBottom: '0px'
                 }}>
-                    {repo.owner}/<span style={{ fontWeight: 'bold' }}>{repo.repoName}</span></span>
+                    <span>{repo.owner}/</span>
+                    <span style={{ fontWeight: 700 }}>{repo.repoName}</span>
+                </div>
             </div>
             {repo.description && repo.description.trim() !== '' &&
-                <p style={{
-                    display: '-webkit-box',
-                    WebkitBoxOrient: 'vertical',
-                    WebkitLineClamp: 2,
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
+                <div style={{
+                    display: 'block',
+                    lineClamp: 2,
                     color: 'white',
                     fontSize: '14px',
                     fontWeight: 400,
                     marginTop: '4px',
                     marginBottom: '0px'
-                }}>{repo.description}</p>
+                }}>{repo.description}</div>
             }
             <div style={{ display: 'flex', gap: '8px' }}>
                 {repo.topics.slice(0, 4).map((topic) => (
@@ -74,13 +74,11 @@ export function Repo({ repo }) {
                     width: '10px',
                     height: '10px',
                     backgroundColor: repo.languageColor,
-                    borderRadius: '100%'
-                }}>
-                </span>
+                    borderRadius: '50%'
+                }} />
                 <span>{repo.language}</span>
                 <span>·</span>
-                <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"
-                    style={{ display: 'flex', verticalAlign: 'text-bottom' }}>
+                <svg viewBox="0 0 16 16" width="16" height="16" fill="rgb(145, 152, 161)">
                     <path d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.751.751 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Zm0 2.445L6.615 5.5a.75.75 0 0 1-.564.41l-3.097.45 2.24 2.184a.75.75 0 0 1 .216.664l-.528 3.084 2.769-1.456a.75.75 0 0 1 .698 0l2.77 1.456-.53-3.084a.75.75 0 0 1 .216-.664l2.24-2.183-3.096-.45a.75.75 0 0 1-.564-.41L8 2.694Z">
                     </path>
                 </svg>
