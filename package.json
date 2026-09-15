@@ -6,7 +6,7 @@
   "devDependencies": {
     "@cloudflare/workers-types": "^5.20260908.1",
     "@types/bun": "^1.4.2",
-    "@types/react": "^19",
+    "@types/react": "^19.3.0",
     "wrangler": "^4.130.0"
   },
   "peerDependencies": {

@@ -87,16 +87,16 @@ function monthLabels(weeks: Week[]): Array<{ weekIndex: number; label: string }>
 
 export function ActivityCalendar({
   data,
-  blockSize = 12,
-  blockMargin = 4,
+  blockSize = 10,
+  blockMargin = 3,
   blockRadius = 2,
-  fontSize = 14,
+  fontSize = 12,
   maxLevel = 4,
   weekStart = 0,
   hideMonthLabels = false,
   hideWeekdayLabels = false,
   colors = GITHUB_DARK,
-  labelColor = "#9198a1",
+  labelColor = "rgb(240, 246, 252)",
 }: ActivityCalendarProps) {
   const weeks = groupByWeeks(data, weekStart);
   const step = blockSize + blockMargin;
