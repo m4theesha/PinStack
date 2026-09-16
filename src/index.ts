@@ -23,7 +23,7 @@ app.doc("/openapi-doc", {
     ],
     servers: [
         {
-            url: "http://127.0.0.1:8787",
+            url: "https://pinstack.matheesha.workers.dev",
             description: "Production"
         }
     ]
