@@ -1,47 +1,56 @@
-import { OpenAPIHono, createRoute, z } from "@hono/zod-openapi";
-import type { Env } from "../../types";
-import { fetchRepoData, getCachedData, setCachedRepo } from '../../services/github';
-import { isCacheExpired } from '../../utils';
+import {OpenAPIHono, createRoute, z} from "@hono/zod-openapi";
+import type {Env} from "../../types";
+import {fetchRepoData, getCachedData, setCachedRepo} from '../../services/github';
+import {isCacheExpired} from '../../utils';
 import GenerateGithubRepoSvg from '../../templates/github/repo/generate';
 
 const repo = new OpenAPIHono<{ Bindings: Env }>()
 
 function svgResponse(svg: string): Response {
-  return new Response(svg, {
-    headers: {
-      "Content-Type": "image/svg+xml",
-      "Cache-Control": "public, max-age=3600",
-    },
-  });
+    return new Response(svg, {
+        headers: {
+            "Content-Type": "image/svg+xml",
+            "Cache-Control": "public, max-age=3600",
+        },
+    });
 }
 
 const route = createRoute({
     method: "get",
     path: "/{owner}/{repo}",
-    operationId: "repository",
+    operationId: "getRepositoryCard",
     request: {
         params: z.object({
-            owner: z.string().openapi({ example: "m4theesha" }),
-            repo: z.string().openapi({ example: "pinstack" })
+            owner: z.string().openapi({
+                description: "The GitHub username or organization that owns the repository.",
+                example: "m4theesha"
+            }),
+            repo: z.string().openapi({
+                description: "The name of the GitHub repository.",
+                example: "pinstack"
+            })
         }),
     },
     responses: {
         200: {
-            description: "SVG card for the repository",
-            content: { "image/svg+xml": { schema: z.string() } }
+            description: "SVG repository card generated successfully.",
+            content: {"image/svg+xml": {schema: z.string()}}
         },
         404: {
-            description: "Repository not found",
-            content: { "text/plain": { schema: z.string() } }
+            description: "The specified GitHub repository could not be found.",
+            content: {"text/plain": {schema: z.string()}}
         }
     },
-    tags: ['Github'],
-    summary: "Get a svg card for a repository"
+    tags: ['GitHub'],
+    summary: "Generate a repository SVG card",
+    description:
+        "Generates an SVG card containing information about a public GitHub repository. " +
+        "The returned SVG can be embedded directly in Markdown, HTML, or other applications that support SVG images.",
 })
 repo.openapi(route, async (c) => {
-    const { owner, repo: repoName } = c.req.valid("param")
+    const {owner, repo: repoName} = c.req.valid("param")
     const cacheKey = `github:repo:${owner}/${repoName}`
-    //get cached github repo data
+    //get cached GitHub repo data
     const cachedRepo = await getCachedData(c.env, cacheKey)
     //check if cache is expired
     if (cachedRepo && !isCacheExpired(cachedRepo?.cachedAt, 3600)) {
@@ -51,7 +60,7 @@ repo.openapi(route, async (c) => {
     //fetch repo data from github
     const fetchedRepo = await fetchRepoData(owner, repoName, c.env, cachedRepo?.etag ?? null)
 
-    if(!fetchedRepo.repoExists){
+    if (!fetchedRepo.repoExists) {
         return c.text("Requested repo doesn't exist!")
     }
     //check if repo data isn't modified since last fetch and return cached data

@@ -1,6 +1,6 @@
-import { OpenAPIHono } from '@hono/zod-openapi';
-import { cors } from 'hono/cors';
-import type { Env } from "./types";
+import {OpenAPIHono} from '@hono/zod-openapi';
+import {cors} from 'hono/cors';
+import type {Env} from "./types";
 import repo from './routes/github/repo';
 import user from './routes/github/user';
 
@@ -17,9 +17,12 @@ app.route('/github/user', user)
 
 app.doc("/openapi-doc", {
     openapi: "3.0.0",
-    info: { title: "PinStack API", version: "1.0.0" },
+    info: {title: "PinStack API", version: "1.0.0"},
     tags: [
-        { name: 'Github', description: 'GitHub-related endpoints' },
+        {
+            name: 'GitHub',
+            description: '"description": "Endpoints for generating SVG cards from public GitHub repositories and user profiles."'
+        },
     ],
     servers: [
         {

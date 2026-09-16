@@ -1,45 +1,50 @@
-import { OpenAPIHono, createRoute, z } from "@hono/zod-openapi";
-import type { Env } from "../../types";
-import { fetchUserData, getCachedData, setCachedUser } from "../../services/github";
-import { isCacheExpired } from "../../utils";
+import {OpenAPIHono, createRoute, z} from "@hono/zod-openapi";
+import type {Env} from "../../types";
+import {fetchUserData, getCachedData, setCachedUser} from "../../services/github";
+import {isCacheExpired} from "../../utils";
 import GenerateGithubUserSvg from "../../templates/github/user/generate";
 
 const user = new OpenAPIHono<{ Bindings: Env }>()
 
 function svgResponse(svg: string): Response {
-  return new Response(svg, {
-    headers: {
-      "Content-Type": "image/svg+xml",
-      "Cache-Control": "public, max-age=3600",
-    },
-  });
+    return new Response(svg, {
+        headers: {
+            "Content-Type": "image/svg+xml",
+            "Cache-Control": "public, max-age=3600",
+        },
+    });
 }
 
 const route = createRoute({
     method: "get",
     path: "/{username}",
-    operationId: "user",
+    operationId: "getUserCard",
     request: {
         params: z.object({
-            username: z.string().openapi({ example: "torvalds" })
+            username: z.string().openapi({
+                description: "The GitHub username whose profile card should be generated.",
+                example: "torvalds"
+            })
         }),
     },
     responses: {
         200: {
-            description: "SVG card for the user profile",
-            content: { "image/svg+xml": { schema: z.string() } }
+            description: "SVG user profile card generated successfully.",
+            content: {"image/svg+xml": {schema: z.string()}}
         },
         404: {
-            description: "User not found",
-            content: { "text/plain": { schema: z.string() } }
+            description: "The specified GitHub user could not be found.",
+            content: {"text/plain": {schema: z.string()}}
         }
     },
-    tags: ['Github'],
-    summary: "Get a svg card for a user profile"
+    tags: ['GitHub'],
+    summary: "Generate a user profile SVG card",
+    description: "Generates an SVG card containing information about a public GitHub user profile. " +
+        "The returned SVG can be embedded directly in Markdown, HTML, or other applications that support SVG images."
 })
 
 user.openapi(route, async (c) => {
-    const { username } = c.req.valid('param')
+    const {username} = c.req.valid('param')
     const cacheKey = `github:user:${username}`
 
     const cachedUser = await getCachedData(c.env, cacheKey)
