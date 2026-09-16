@@ -41,7 +41,7 @@ const route = createRoute({
             content: {"text/plain": {schema: z.string()}}
         }
     },
-    tags: ['GitHub'],
+    tags: ['Github'],
     summary: "Generate a repository SVG card",
     description:
         "Generates an SVG card containing information about a public GitHub repository. " +

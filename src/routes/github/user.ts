@@ -37,7 +37,7 @@ const route = createRoute({
             content: {"text/plain": {schema: z.string()}}
         }
     },
-    tags: ['GitHub'],
+    tags: ['Github'],
     summary: "Generate a user profile SVG card",
     description: "Generates an SVG card containing information about a public GitHub user profile. " +
         "The returned SVG can be embedded directly in Markdown, HTML, or other applications that support SVG images."

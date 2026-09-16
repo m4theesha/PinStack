@@ -20,7 +20,7 @@ app.doc("/openapi-doc", {
     info: {title: "PinStack API", version: "1.0.0"},
     tags: [
         {
-            name: 'GitHub',
+            name: 'Github',
             description: '"description": "Endpoints for generating SVG cards from public GitHub repositories and user profiles."'
         },
     ],
