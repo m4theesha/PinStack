@@ -21,7 +21,7 @@ const route = createRoute({
     operationId: "user",
     request: {
         params: z.object({
-            username: z.string().openapi({ example: "m4theesha" })
+            username: z.string().openapi({ example: "torvalds" })
         }),
     },
     responses: {
