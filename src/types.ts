@@ -15,6 +15,24 @@ export interface RepoData {
     stargazers: number;
 }
 
+export interface ContributionDay {
+  date: string,
+  count: number,
+  level: number,
+}
+
+export interface UserData {
+    username: string,
+    avatar: string,
+    name: string,
+    bio: string,
+    followers: number,
+    totalRepos: number,
+    totalStars: number,
+    contributionsLastYear: number,
+    contributionDays: ContributionDay[],
+}
+
 export interface LanguageInfo {
     color: string | null;
     url: string;

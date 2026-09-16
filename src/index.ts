@@ -2,6 +2,7 @@ import { OpenAPIHono } from '@hono/zod-openapi';
 import { cors } from 'hono/cors';
 import type { Env } from "./types";
 import repo from './routes/github/repo';
+import user from './routes/github/user';
 
 const app = new OpenAPIHono<{ Bindings: Env }>();
 
@@ -12,6 +13,7 @@ app.use('*', cors({
 app.get('/', (c) => c.text('Hellow world!'))
 
 app.route('/github/repo', repo)
+app.route('/github/user', user)
 
 app.doc("/openapi-doc", {
     openapi: "3.0.0",
