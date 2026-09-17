@@ -1,3 +1,5 @@
+import type {ThemeData} from "../types.ts";
+
 export type Activity = {
   date: string; // YYYY-MM-DD
   count: number;
@@ -8,6 +10,7 @@ type Week = Array<Activity | undefined>;
 
 export type ActivityCalendarProps = {
   data: Activity[];
+  theme: ThemeData;
   blockSize?: number;
   blockMargin?: number;
   blockRadius?: number;
@@ -23,6 +26,7 @@ export type ActivityCalendarProps = {
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 const WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const GITHUB_DARK = ["#161b22", "#0e4429", "#006d32", "#26a641", "#39d353"];
+const GITHUB_LIGHT = ["#eff2f5", "#aceebb", "#4ac26b", "#2da44e", "#116329"]
 
 const DAY_MS = 86_400_000;
 
@@ -86,7 +90,7 @@ function monthLabels(weeks: Week[]): Array<{ weekIndex: number; label: string }>
 }
 
 export function ActivityCalendar({
-  data,
+  data, theme,
   blockSize = 10,
   blockMargin = 3,
   blockRadius = 2,
@@ -95,8 +99,8 @@ export function ActivityCalendar({
   weekStart = 0,
   hideMonthLabels = false,
   hideWeekdayLabels = false,
-  colors = GITHUB_DARK,
-  labelColor = "rgb(240, 246, 252)",
+  colors = theme.isDark ? GITHUB_DARK : GITHUB_LIGHT,
+  labelColor = theme.text,
 }: ActivityCalendarProps) {
   const weeks = groupByWeeks(data, weekStart);
   const step = blockSize + blockMargin;
@@ -105,6 +109,7 @@ export function ActivityCalendar({
   const gridWidth = Math.max(0, weeks.length * step - blockMargin);
   const gridHeight = 7 * step - blockMargin;
   const colorFor = (level: number) => colors[Math.min(Math.max(level, 0), maxLevel)] ?? colors[0];
+  const blockBorderColor = theme.isDark ? "rgba(1, 4, 9, 0.05)" : "rgba(31, 35, 40, 0.05)";
 
   return (
     <div
@@ -185,6 +190,7 @@ export function ActivityCalendar({
                       height: blockSize,
                       marginBottom: di === 6 ? 0 : blockMargin,
                       borderRadius: blockRadius,
+                      border: `1px solid ${blockBorderColor}`,
                       backgroundColor: activity ? colorFor(activity.level) : "transparent",
                     }}
                   />

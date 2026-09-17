@@ -1,6 +1,6 @@
 import { formatCount } from "../../../utils";
 
-export function Repo({ repo }) {
+export function Repo({ repo, theme }) {
     return (
         <div style={{
             display: 'flex',
@@ -8,9 +8,9 @@ export function Repo({ repo }) {
             fontFamily: 'MonaSans',
             width: '430px',
             padding: '16px',
-            backgroundColor: '#0d1117',
+            backgroundColor: theme.background,
             borderRadius: 6,
-            border: '1px solid #3d444d',
+            border: `1px solid ${theme.border}`,
         }}>
             <div style={{
                 display: 'flex',
@@ -19,13 +19,13 @@ export function Repo({ repo }) {
                 gap: 10
             }}>
                 <img width={20} height={20} src={repo.avatar} style={{
-                    border: '1px solid #31343a',
+                    border: `1px solid ${theme.border}`,
                     borderRadius: repo.isOwnedByOrg ? '4px' : '100%',
                     marginBottom: '0px'
                 }} />
                 <div style={{
                     display: 'flex',
-                    color: '#4493f8',
+                    color: theme.link,
                     fontSize: '16px',
                     fontWeight: 500,
                     marginBottom: '0px'
@@ -38,7 +38,7 @@ export function Repo({ repo }) {
                 <div style={{
                     display: 'block',
                     lineClamp: 2,
-                    color: 'white',
+                    color: theme.text,
                     fontSize: '14px',
                     fontWeight: 400,
                     marginTop: '4px',
@@ -65,7 +65,7 @@ export function Repo({ repo }) {
             <div style={{
                 display: 'flex',
                 fontSize: '12px',
-                color: 'rgb(145, 152, 161)',
+                color: theme.text_muted,
                 alignItems: 'center',
                 marginTop: '8px',
                 gap: '8px'

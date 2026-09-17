@@ -1,7 +1,7 @@
 import { ActivityCalendar } from "../../../components/activity-calendar";
 import { formatCount } from "../../../utils";
 
-export function User({ user }) {
+export function User({ user, theme }) {
     return (
         <div style={{
             display: 'flex',
@@ -9,9 +9,9 @@ export function User({ user }) {
             fontFamily: 'MonaSans',
             width: 'auto',
             padding: '16px',
-            backgroundColor: '#0d1117',
+            backgroundColor: theme.background,
             borderRadius: '16px',
-            border: '1px solid #3d444d',
+            border: `1px solid ${theme.border}`,
         }}>
             <div style={{
                 display: 'flex',
@@ -32,7 +32,7 @@ export function User({ user }) {
                         fontWeight: 'bold'
                     }} >{user.name}</span>
                     <span style={{
-                        color: 'rgb(145, 152, 161)',
+                        color: theme.text_muted,
                         fontSize: '12px',
                         fontWeight: '500'
                     }} >@{user.username}</span>
@@ -40,7 +40,7 @@ export function User({ user }) {
                         display: '-webkit-box',
                         WebkitBoxOrient: 'vertical',
                         WebkitLineClamp: 1,
-                        color: 'rgb(145, 152, 161)',
+                        color: theme.text_muted,
                         fontSize: '12px',
                         fontWeight: '500',
                         overflow: 'hidden',
@@ -55,18 +55,18 @@ export function User({ user }) {
                 marginBottom: '8px',
                 alignItems: 'center',
                 fontSize: '14px',
-                color: 'white',
+                color: theme.text,
                 justifyContent: 'space-around',
             }}>
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }} ><p style={{ marginBottom: '0' }}>{formatCount(user.followers)}</p><p style={{ fontSize: '12px', marginTop: '0' }}>Followers</p></div>
-                <div style={{ width: '1px', height: '16px', backgroundColor: '#2f353d' }}></div>
+                <div style={{ width: '1px', height: '16px', backgroundColor: theme.border }}></div>
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }} ><p style={{ marginBottom: '0' }}>{formatCount(user.totalStars)}</p><p style={{ fontSize: '12px', marginTop: '0' }}>Stargazers</p></div>
-                <div style={{ width: '1px', height: '16px', backgroundColor: '#2f353d' }}></div>
+                <div style={{ width: '1px', height: '16px', backgroundColor: theme.border }}></div>
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }} ><p style={{ marginBottom: '0' }}>{user.totalRepos}</p><p style={{ fontSize: '12px', marginTop: '0' }}>Repositories</p></div>
-                <div style={{ width: '1px', height: '16px', backgroundColor: '#2f353d' }}></div>
+                <div style={{ width: '1px', height: '16px', backgroundColor: theme.border }}></div>
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }} ><p style={{ marginBottom: '0' }}>{user.contributionsLastYear}</p><p style={{ fontSize: '12px', marginTop: '0' }}>Contributions - 12mo</p></div>
             </div>
-            <ActivityCalendar data={user.contributionDays} />
+            <ActivityCalendar data={user.contributionDays} theme={theme} />
         </div>
     )
 }

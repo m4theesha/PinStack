@@ -3,6 +3,15 @@ export interface Env {
   GITHUB_TOKEN: string;
 }
 
+export interface ThemeData {
+    isDark: boolean;
+    background: string;
+    text: string;
+    text_muted: string;
+    link: string;
+    border: string;
+}
+
 export interface RepoData {
     owner: string;
     isOwnedByOrg: boolean;

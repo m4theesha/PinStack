@@ -1,7 +1,7 @@
 import {OpenAPIHono, createRoute, z} from "@hono/zod-openapi";
 import type {Env} from "../../types";
 import {fetchRepoData, getCachedData, setCachedRepo} from '../../services/github';
-import {isCacheExpired} from '../../utils';
+import {isCacheExpired, THEME_COLORS, THEMES} from '../../utils';
 import GenerateGithubRepoSvg from '../../templates/github/repo/generate';
 
 const repo = new OpenAPIHono<{ Bindings: Env }>()
@@ -30,6 +30,12 @@ const route = createRoute({
                 example: "pinstack"
             })
         }),
+        query: z.object({
+            theme: z.enum(THEMES).default("github_dark").openapi({
+                description: "Color theme for the generated card.",
+                example: "github_light"
+            })
+        })
     },
     responses: {
         200: {
@@ -49,15 +55,19 @@ const route = createRoute({
 })
 repo.openapi(route, async (c) => {
     const {owner, repo: repoName} = c.req.valid("param")
+    const {theme} = c.req.valid("query")
     const cacheKey = `github:repo:${owner}/${repoName}`
+
+    const themeColors = THEME_COLORS[theme] ?? THEME_COLORS["github_dark"];
+
     //get cached GitHub repo data
     const cachedRepo = await getCachedData(c.env, cacheKey)
     //check if cache is expired
     if (cachedRepo && !isCacheExpired(cachedRepo?.cachedAt, 3600)) {
-        const svg = await GenerateGithubRepoSvg(cachedRepo.data)
+        const svg = await GenerateGithubRepoSvg(cachedRepo.data, themeColors)
         return svgResponse(svg)
     }
-    //fetch repo data from github
+    //fetch repo data from GitHub
     const fetchedRepo = await fetchRepoData(owner, repoName, c.env, cachedRepo?.etag ?? null)
 
     if (!fetchedRepo.repoExists) {
@@ -66,13 +76,13 @@ repo.openapi(route, async (c) => {
     //check if repo data isn't modified since last fetch and return cached data
     if (fetchedRepo.notModified == true && cachedRepo) {
         await setCachedRepo(c.env, cacheKey, cachedRepo.data, cachedRepo.etag ?? null)
-        const svg = await GenerateGithubRepoSvg(cachedRepo.data)
+        const svg = await GenerateGithubRepoSvg(cachedRepo.data, themeColors)
         return svgResponse(svg)
     }
-    //return fetched data if new data was returned from github
+    //return fetched data if new data was returned from GitHub
     if (fetchedRepo.notModified == false) {
         await setCachedRepo(c.env, cacheKey, fetchedRepo.data, fetchedRepo.etag ?? null)
-        const svg = await GenerateGithubRepoSvg(fetchedRepo.data)
+        const svg = await GenerateGithubRepoSvg(fetchedRepo.data, themeColors)
         return svgResponse(svg)
     }
 

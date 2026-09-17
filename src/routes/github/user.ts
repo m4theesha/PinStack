@@ -1,7 +1,7 @@
 import {OpenAPIHono, createRoute, z} from "@hono/zod-openapi";
 import type {Env} from "../../types";
 import {fetchUserData, getCachedData, setCachedUser} from "../../services/github";
-import {isCacheExpired} from "../../utils";
+import {isCacheExpired, THEME_COLORS, THEMES} from "../../utils";
 import GenerateGithubUserSvg from "../../templates/github/user/generate";
 
 const user = new OpenAPIHono<{ Bindings: Env }>()
@@ -26,6 +26,12 @@ const route = createRoute({
                 example: "torvalds"
             })
         }),
+        query: z.object({
+            theme: z.enum(THEMES).default("github_dark").openapi({
+                description: "Color theme for the generated card.",
+                example: "github_light"
+            })
+        })
     },
     responses: {
         200: {
@@ -45,12 +51,15 @@ const route = createRoute({
 
 user.openapi(route, async (c) => {
     const {username} = c.req.valid('param')
+    const {theme} = c.req.valid("query")
     const cacheKey = `github:user:${username}`
+
+    const themeColors = THEME_COLORS[theme] ?? THEME_COLORS["github_dark"];
 
     const cachedUser = await getCachedData(c.env, cacheKey)
 
     if (cachedUser && !isCacheExpired(cachedUser?.cachedAt, 3600)) {
-        const svg = await GenerateGithubUserSvg(cachedUser.data)
+        const svg = await GenerateGithubUserSvg(cachedUser.data, themeColors)
         return svgResponse(svg)
     }
 
@@ -60,7 +69,7 @@ user.openapi(route, async (c) => {
         return c.text("Requested user doesn't exist!")
     } else {
         await setCachedUser(c.env, cacheKey, fetchedUser.data)
-        const svg = await GenerateGithubUserSvg(fetchedUser.data)
+        const svg = await GenerateGithubUserSvg(fetchedUser.data, themeColors)
         return svgResponse(svg)
     }
 
