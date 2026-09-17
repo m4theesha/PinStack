@@ -1,97 +1,66 @@
 # PinStack
 
-PinStack is a lightweight API for generating dynamic SVG cards from developer and project data.
+**Dynamic SVG cards for developers.**
 
-> [!NOTE]
-> Documentation page & Support for more platforms will be added in future updates.
+PinStack generates beautiful, embeddable SVG cards for dev platforms like GitHub.
 
-## Examples
+Use them in your **GitHub README, portfolio, personal website, or anywhere else that supports images**.
 
-GitHub profile API:
+## ✨ Features
 
-![PinStack Profile Demo](https://pinstack.matheesha.workers.dev/github/user/torvalds)
+* 👤 Dynamic GitHub profile cards
+* 📌 Dynamic GitHub repository cards
+* ⚡ Lightweight API
+* 🎨 Embeddable SVG output
+* 🔄 Automatically reflects current GitHub data
+* 🌐 Works anywhere SVG images can be embedded
 
-GitHub repository API:
+## 🚀 Documentation
 
-![PinStack Repo Demo](https://pinstack.matheesha.workers.dev/github/repo/m4theesha/pinstack)
+For installation, API endpoints, usage examples, customization, and other details:
 
-## Use cases
+**[Read the PinStack Documentation](https://pinstack-docs.matheesha.workers.dev)**
 
-### Profile API
-The GitHub profile card can be used in portfolio sites to showcase your GitHub statistics
+## 👀 Examples
 
-### Repository API
-The GitHub repository card be used to pin your work into your GitHub README.md or to showcase your projects in a portfolio site
+### GitHub Profile
 
-## Usage
+![PinStack Profile](https://pinstack.matheesha.workers.dev/github/user/torvalds)
 
-### GitHub Profile API
+### GitHub Repository
 
-Replace ```<username>``` with the GitHub username:
+![PinStack Repository](https://pinstack.matheesha.workers.dev/github/repo/m4theesha/pinstack)
 
-```xml
-https://pinstack.matheesha.workers.dev/github/user/<username>
+The generated cards can be embedded directly into GitHub READMEs, websites, portfolios, and other platforms that support SVG images.
+
+## 🔗 Links
+
+* 📚 **Documentation:** https://pinstack-docs.matheesha.workers.dev
+* 🌐 **API:** https://pinstack.matheesha.workers.dev
+* 💻 **Source:** https://github.com/m4theesha/pinstack
+
+## 🛠️ Development
+
+Clone the repository and install the dependencies:
+
+```bash
+git clone https://github.com/m4theesha/pinstack.git
+cd pinstack
+bun install
 ```
 
-For example:
+Start the local development server:
 
-```text
-https://pinstack.matheesha.workers.dev/github/user/torvalds
+```bash
+bun run dev
 ```
 
-### Add it to a readme file
+## 🤝 Contributing
 
-```md
-![PinStack Profile Demo](https://pinstack.matheesha.workers.dev/github/user/<username>)
-```
+Contributions, ideas, and bug reports are welcome.
 
-### Add it to an HTML file
+If you'd like to contribute, feel free to open an issue or submit a pull request.
 
-```html
-<object
-  type="image/svg+xml"
-  data="https://pinstack.matheesha.workers.dev/github/user/<username>">
-</object>
-```
+## 📄 License
 
-or
-
-```html
-<img alt="profile" src="https://pinstack.matheesha.workers.dev/github/user/<username>">
-```
-
-
-### GitHub Repository API
-
-Replace ```<username>``` and ```<repoName>``` with the GitHub username and repository name:
-
-```xml
-https://pinstack.matheesha.workers.dev/github/repo/<username>/<repoName>
-```
-
-For example:
-
-```text
-https://pinstack.matheesha.workers.dev/github/repo/matheesha/pinstack
-```
-
-### Add it to a readme file
-
-```md
-![PinStack Repo Demo](https://pinstack.matheesha.workers.dev/github/repo/<username>/<repoName>)
-```
-
-### Add it to an HTML file
-
-```html
-<object
-  type="image/svg+xml"
-  data="https://pinstack.matheesha.workers.dev/github/repo/<username>/<repoName>">
-</object>
-```
-
-or
-
-```html
-<img alt="repo" src="https://pinstack.matheesha.workers.dev/github/repo/<username>/<repoName>">
-```
+See the repository for license information.
