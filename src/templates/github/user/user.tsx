@@ -1,7 +1,8 @@
 import { ActivityCalendar } from "../../../components/activity-calendar";
 import { formatCount } from "../../../utils";
+import type {UserData, ThemeData} from "../../../types.ts";
 
-export function User({ user, theme }) {
+export function User({ user, theme }: { user: UserData; theme: ThemeData }) {
     return (
         <div style={{
             display: 'flex',

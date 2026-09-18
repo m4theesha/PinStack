@@ -1,6 +1,7 @@
 import { formatCount } from "../../../utils";
+import type {RepoData, ThemeData} from "../../../types.ts";
 
-export function Repo({ repo, theme }) {
+export function Repo({ repo, theme }: { repo: RepoData; theme: ThemeData }) {
     return (
         <div style={{
             display: 'flex',
@@ -9,7 +10,7 @@ export function Repo({ repo, theme }) {
             width: '430px',
             padding: '16px',
             backgroundColor: theme.background,
-            borderRadius: 6,
+            borderRadius: '6px',
             border: `1px solid ${theme.border}`,
         }}>
             <div style={{

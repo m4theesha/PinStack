@@ -3,6 +3,7 @@ import type {Env} from "../../types";
 import {fetchRepoData, getCachedData, setCachedRepo} from '../../services/github';
 import {isCacheExpired, THEME_COLORS, THEMES} from '../../utils';
 import GenerateGithubRepoSvg from '../../templates/github/repo/generate';
+import GenerateErrorSvg from "../../templates/error/generate.ts";
 
 const repo = new OpenAPIHono<{ Bindings: Env }>()
 
@@ -64,29 +65,26 @@ repo.openapi(route, async (c) => {
     const cachedRepo = await getCachedData(c.env, cacheKey)
     //check if cache is expired
     if (cachedRepo && !isCacheExpired(cachedRepo?.cachedAt, 3600)) {
-        const svg = await GenerateGithubRepoSvg(cachedRepo.data, themeColors)
-        return svgResponse(svg)
+        return svgResponse(await GenerateGithubRepoSvg(cachedRepo.data, themeColors))
     }
     //fetch repo data from GitHub
     const fetchedRepo = await fetchRepoData(owner, repoName, c.env, cachedRepo?.etag ?? null)
 
     if (!fetchedRepo.repoExists) {
-        return c.text("Requested repo doesn't exist!")
+        return svgResponse(await GenerateErrorSvg(`Requested repository ${owner}/${repoName} doesn't exist!`, 404))
     }
     //check if repo data isn't modified since last fetch and return cached data
     if (fetchedRepo.notModified == true && cachedRepo) {
         await setCachedRepo(c.env, cacheKey, cachedRepo.data, cachedRepo.etag ?? null)
-        const svg = await GenerateGithubRepoSvg(cachedRepo.data, themeColors)
-        return svgResponse(svg)
+        return svgResponse(await GenerateGithubRepoSvg(cachedRepo.data, themeColors))
     }
     //return fetched data if new data was returned from GitHub
     if (fetchedRepo.notModified == false) {
         await setCachedRepo(c.env, cacheKey, fetchedRepo.data, fetchedRepo.etag ?? null)
-        const svg = await GenerateGithubRepoSvg(fetchedRepo.data, themeColors)
-        return svgResponse(svg)
+        return svgResponse(await GenerateGithubRepoSvg(fetchedRepo.data, themeColors))
     }
 
-    return c.text("Unexpected cache state", 500)
+    return svgResponse(await GenerateErrorSvg(`An unexpected error occurred while fetching repository ${owner}/${repoName}.`, 500))
 })
 
 export default repo

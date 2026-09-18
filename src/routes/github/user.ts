@@ -3,6 +3,7 @@ import type {Env} from "../../types";
 import {fetchUserData, getCachedData, setCachedUser} from "../../services/github";
 import {isCacheExpired, THEME_COLORS, THEMES} from "../../utils";
 import GenerateGithubUserSvg from "../../templates/github/user/generate";
+import GenerateErrorSvg from "../../templates/error/generate.ts";
 
 const user = new OpenAPIHono<{ Bindings: Env }>()
 
@@ -59,18 +60,16 @@ user.openapi(route, async (c) => {
     const cachedUser = await getCachedData(c.env, cacheKey)
 
     if (cachedUser && !isCacheExpired(cachedUser?.cachedAt, 3600)) {
-        const svg = await GenerateGithubUserSvg(cachedUser.data, themeColors)
-        return svgResponse(svg)
+        return svgResponse(await GenerateGithubUserSvg(cachedUser.data, themeColors))
     }
 
     const fetchedUser = await fetchUserData(username, c.env)
 
     if (!fetchedUser.userExists) {
-        return c.text("Requested user doesn't exist!")
+        return svgResponse(await GenerateErrorSvg(`Requested user ${username} doesn't exist!`, 404))
     } else {
         await setCachedUser(c.env, cacheKey, fetchedUser.data)
-        const svg = await GenerateGithubUserSvg(fetchedUser.data, themeColors)
-        return svgResponse(svg)
+        return svgResponse(await GenerateGithubUserSvg(fetchedUser.data, themeColors))
     }
 
 })
