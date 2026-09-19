@@ -54,7 +54,7 @@ bun install
 Start the local development server:
 
 ```bash
-bun run dev
+bunx wrangler dev
 ```
 
 ## 🤝 Contributing
