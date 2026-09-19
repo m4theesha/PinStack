@@ -4,9 +4,11 @@
 
 PinStack generates beautiful, embeddable SVG cards for dev platforms like GitHub.
 
-Use them in your **GitHub README, portfolio, personal website, or anywhere else that supports images**.
+[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/m4theesha/pinstack)
+[![Built with Cloudflare](https://workers.cloudflare.com/built-with-cloudflare.svg)](https://cloudflare.com)
 
-[<img src="https://run.pstmn.io/button.svg" alt="Run In Postman" style="width: 128px; height: 32px;">](https://god.gw.postman.com/run-collection/46661034-67c22eaa-f21c-401a-a14c-9c0440ecfc0f?action=collection%2Ffork&source=rip_markdown&collection-url=entityId%3D46661034-67c22eaa-f21c-401a-a14c-9c0440ecfc0f%26entityType%3Dcollection%26workspaceId%3D1e875283-a18a-43c7-aa28-eb814677d85d)
+
+Use them in your **GitHub README, portfolio, personal website, or anywhere else that supports images**.
 
 ## ✨ Features
 
