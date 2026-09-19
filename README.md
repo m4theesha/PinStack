@@ -23,7 +23,7 @@ Use them in your **GitHub README, portfolio, personal website, or anywhere else 
 
 For installation, API endpoints, usage examples, customization, and other details:
 
-**[Read the PinStack Documentation](https://pinstack-docs.matheesha.workers.dev)**
+**[Read the PinStack Documentation](https://pinstack.docs.buildwithfern.com/)**
 
 ## 👀 Examples
 
