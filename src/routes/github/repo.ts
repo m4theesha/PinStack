@@ -71,7 +71,7 @@ repo.openapi(route, async (c) => {
     const fetchedRepo = await fetchRepoData(owner, repoName, c.env, cachedRepo?.etag ?? null)
 
     if (!fetchedRepo.repoExists) {
-        return svgResponse(await GenerateErrorSvg(`Requested repository ${owner}/${repoName} doesn't exist!`, 404))
+        return svgResponse(await GenerateErrorSvg(`Requested repository doesn't exist!`, 404))
     }
     //check if repo data isn't modified since last fetch and return cached data
     if (fetchedRepo.notModified == true && cachedRepo) {
@@ -84,7 +84,7 @@ repo.openapi(route, async (c) => {
         return svgResponse(await GenerateGithubRepoSvg(fetchedRepo.data, themeColors))
     }
 
-    return svgResponse(await GenerateErrorSvg(`An unexpected error occurred while fetching repository ${owner}/${repoName}.`, 500))
+    return svgResponse(await GenerateErrorSvg(`An unexpected error occurred while fetching repository.`, 500))
 })
 
 export default repo

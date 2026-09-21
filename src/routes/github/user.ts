@@ -66,7 +66,7 @@ user.openapi(route, async (c) => {
     const fetchedUser = await fetchUserData(username, c.env)
 
     if (!fetchedUser.userExists) {
-        return svgResponse(await GenerateErrorSvg(`Requested user ${username} doesn't exist!`, 404))
+        return svgResponse(await GenerateErrorSvg(`Requested user doesn't exist!`, 404))
     } else {
         await setCachedUser(c.env, cacheKey, fetchedUser.data)
         return svgResponse(await GenerateGithubUserSvg(fetchedUser.data, themeColors))
