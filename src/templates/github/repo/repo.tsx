@@ -1,7 +1,7 @@
 import { formatCount } from "../../../utils";
 import type {RepoData, ThemeData} from "../../../types.ts";
 
-export function Repo({ repo, theme }: { repo: RepoData; theme: ThemeData }) {
+export function GitHubRepo({ repo, theme }: { repo: RepoData; theme: ThemeData }) {
     return (
         <div style={{
             display: 'flex',
@@ -23,7 +23,7 @@ export function Repo({ repo, theme }: { repo: RepoData; theme: ThemeData }) {
                     border: `1px solid ${theme.border}`,
                     borderRadius: repo.isOwnedByOrg ? '4px' : '100%',
                     marginBottom: '0px'
-                }} />
+                }}  alt={repo.repoName} />
                 <div style={{
                     display: 'flex',
                     color: theme.link,

@@ -1,3 +1,7 @@
+export const API_URL = "https://pinstack.matheesha.workers.dev"
+export const API_DOCS_URL = "https://pinstack.docs.buildwithfern.com"
+export const REPOSITORY_URL = "https://github.com/m4theesha/pinstack"
+
 export function isCacheExpired(cachedAt: string, seconds: number): boolean {
     const cachedTime = new Date(cachedAt).getTime()
     const now = Date.now()
@@ -18,24 +22,3 @@ function trim(value: number): string {
     const rounded = Math.round(value * 10) / 10; // round to 1 decimal first
     return rounded % 1 === 0 ? rounded.toFixed(0) : rounded.toFixed(1);
 }
-
-export const THEME_COLORS = {
-    github_dark: {
-        isDark: true,
-        background: "#0d1117",
-        text: "rgb(240, 246, 252)",
-        text_muted: "rgb(145, 152, 161)",
-        link: "rgb(68, 147, 248)",
-        border: "rgb(61, 68, 77)"
-    },
-    github_light: {
-        isDark: false,
-        background: "#ffffff",
-        text: "rgb(31, 35, 40)",
-        text_muted: "rgb(89, 99, 110)",
-        link: "rgb(9, 105, 218)",
-        border: "rgb(209, 217, 224)"
-    }
-} as const
-
-export const THEMES = Object.keys(THEME_COLORS) as (keyof typeof THEME_COLORS)[]

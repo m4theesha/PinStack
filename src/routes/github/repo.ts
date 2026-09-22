@@ -1,9 +1,10 @@
 import {OpenAPIHono, createRoute, z} from "@hono/zod-openapi";
 import type {Env} from "../../types";
 import {fetchRepoData, getCachedData, setCachedRepo} from '../../services/github';
-import {isCacheExpired, THEME_COLORS, THEMES} from '../../utils';
+import {isCacheExpired} from '../../utils';
 import GenerateGithubRepoSvg from '../../templates/github/repo/generate';
 import GenerateErrorSvg from "../../templates/error/generate.ts";
+import {THEME_COLORS, THEMES} from "../../utils/colors.ts";
 
 const repo = new OpenAPIHono<{ Bindings: Env }>()
 
@@ -41,14 +42,22 @@ const route = createRoute({
     responses: {
         200: {
             description: "SVG repository card generated successfully.",
-            content: {"image/svg+xml": {schema: z.string()}}
+            content: {
+                "image/svg+xml": {
+                    schema: z.string()
+                }
+            }
         },
         404: {
             description: "The specified GitHub repository could not be found.",
-            content: {"text/plain": {schema: z.string()}}
+            content: {
+                "image/svg+xml": {
+                    schema: z.string()
+                }
+            }
         }
     },
-    tags: ['Github'],
+    tags: ['github'],
     summary: "Generate a repository SVG card",
     description:
         "Generates an SVG card containing information about a public GitHub repository. " +
